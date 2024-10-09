@@ -5,9 +5,11 @@ import TaskDetails from "./pages/TaskDetails.jsx";
 import Tasks from "./pages/Tasks.jsx";
 import Trash from "./pages/Trash.jsx";
 import Users from "./pages/Users.jsx";
+import { useSelector } from "react-redux";
+import SideBar from "./components/SideBar.jsx";
 
 function Layout() {
-  const user = "";
+  const { user } = useSelector((state) => state.auth);
 
   const loaction = useLocation(); // location hook
 
@@ -15,7 +17,7 @@ function Layout() {
     //true
     <div className="w-full h-screen flex flex-col md:flex-row">
       <div className="w-1/5 h-screen bg-white stickytop-0 hidden md:block">
-        {/* <SideBar/> */}
+        <SideBar/>
       </div>
       {/* <MobileSideBar/> */}
 
