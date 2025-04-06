@@ -23,11 +23,20 @@ const Task = () => {
   });
   const [formErrors, setFormErrors] = useState({});
 
+  useEffect(() => {
+    if (mode === "add") {
+      setFormData({
+        title: "",
+        description: "",
+        stage: "todo"
+      });
+      setFormErrors({});
+    }
+  }, [mode]);
 
   useEffect(() => {
     document.title = mode === "add" ? "Add task" : "Update Task";
   }, [mode]);
-
 
   useEffect(() => {
     if (mode === "update") {
@@ -101,45 +110,51 @@ const Task = () => {
   return (
     <>
       <MainLayout>
-        <form className='m-auto my-16 max-w-[1000px] bg-white p-8 border border-gray-100 rounded-xl shadow-sm'>
+        <form className='m-auto my-16 max-w-[1000px] bg-white p-8 border border-gray-100 rounded-xl shadow-lg'>
           {loading ? (
             <Loader />
           ) : (
             <>
-              <h2 className='text-center mb-6 text-2xl font-semibold text-gray-800'>{mode === "add" ? "Add New Task" : "Edit Task"}</h2>
-              <div className="mb-5">
-                <label htmlFor="title" className="block mb-2 font-medium text-gray-700">Title</label>
+              <h2 className='text-center mb-8 text-3xl font-bold text-gray-800'>
+                {mode === "add" ? "Create New Task" : "Edit Task"}
+                <div className="mt-2 w-12 h-1 bg-primary rounded-full mx-auto"></div>
+              </h2>
+              
+              <div className="mb-6">
+                <label htmlFor="title" className="block mb-3 text-lg font-semibold text-gray-700">Task Title</label>
                 <input 
                   type="text" 
                   name="title" 
                   id="title" 
                   value={formData.title} 
                   onChange={handleChange}
-                  className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  className="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all text-lg"
                   placeholder="Enter task title"
                 />
                 {fieldError("title")}
               </div>
-              <div className="mb-5">
-                <label htmlFor="description" className="block mb-2 font-medium text-gray-700">Description</label>
+
+              <div className="mb-6">
+                <label htmlFor="description" className="block mb-3 text-lg font-semibold text-gray-700">Task Description</label>
                 <Textarea 
                   name="description" 
                   id="description" 
                   value={formData.description} 
-                  placeholder="Write your task description here..." 
+                  placeholder="Write a detailed description of your task..." 
                   onChange={handleChange}
-                  className="min-h-[150px]"
+                  className="min-h-[200px] p-4 text-lg rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary transition-all"
                 />
                 {fieldError("description")}
               </div>
-              <div className="mb-6">
-                <label htmlFor="stage" className="block mb-2 font-medium text-gray-700">Stage</label>
+
+              <div className="mb-8">
+                <label htmlFor="stage" className="block mb-3 text-lg font-semibold text-gray-700">Task Status</label>
                 <select
                   name="stage"
                   id="stage"
                   value={formData.stage}
                   onChange={handleChange}
-                  className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  className="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all text-lg"
                 >
                   <option value="todo">To Do</option>
                   <option value="in-progress">In Progress</option>
@@ -147,27 +162,22 @@ const Task = () => {
                 </select>
               </div>
 
-              <div className="flex items-center gap-3">
-                <button 
-                  className='bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 font-medium rounded-lg transition-colors'
-                  onClick={handleSubmit}
-                >
-                  {mode === "add" ? "Add task" : "Update Task"}
-                </button>
-                <button 
-                  className='ml-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2.5 font-medium rounded-lg transition-colors' 
-                  onClick={() => navigate("/")}
-                >
-                  Cancel
-                </button>
+              <div className="flex justify-end gap-4">
                 {mode === "update" && (
-                  <button 
-                    className='ml-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2.5 font-medium rounded-lg transition-colors'
+                  <button
+                    type="button"
                     onClick={handleReset}
+                    className="px-6 py-3 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl font-semibold transition-all"
                   >
-                    Reset
+                    Reset Changes
                   </button>
                 )}
+                <button
+                  type="submit"
+                  className="px-6 py-3 text-white bg-primary hover:bg-primary-dark rounded-xl font-semibold transition-all"
+                >
+                  {mode === "add" ? "Create Task" : "Save Changes"}
+                </button>
               </div>
             </>
           )}

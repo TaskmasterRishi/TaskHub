@@ -18,20 +18,26 @@ const Navbar = () => {
 
   return (
     <>
-      <header className='flex justify-between sticky top-0 p-4 bg-white shadow-sm items-center'>
-        <h2 className='cursor-pointer uppercase font-medium'>
+      <header className='flex justify-between sticky top-0 p-4 bg-white/95 backdrop-blur-sm shadow-sm items-center border-b border-gray-100'>
+        <h2 className='cursor-pointer uppercase font-bold text-primary text-lg'>
           <Link to="/"> Task Manager </Link>
         </h2>
         <ul className='hidden md:flex gap-4 uppercase font-medium'>
           {authState.isLoggedIn ? (
             <>
-              <li className="bg-blue-500 text-white hover:bg-blue-600 font-medium rounded-md">
-                <Link to='/tasks/add' className='block w-full h-full px-4 py-2'> <i className="fa-solid fa-plus"></i> Add task </Link>
+              <li className="bg-primary hover:bg-primary-dark text-white font-medium rounded-lg transition-all">
+                <Link to='/tasks/add' className='block w-full h-full px-4 py-2 flex items-center gap-2'> 
+                  <i className="fa-solid fa-plus"></i> Add task 
+                </Link>
               </li>
-              <li className='py-2 px-3 cursor-pointer hover:bg-gray-200 transition rounded-sm'>
-                <Link to="/profile">Profile</Link>
+              <li className='py-2 px-3 cursor-pointer hover:bg-gray-100 transition rounded-lg'>
+                <Link to="/profile" className="flex items-center gap-2">
+                  <i className="fa-solid fa-user"></i> Profile
+                </Link>
               </li>
-              <li className='py-2 px-3 cursor-pointer hover:bg-gray-200 transition rounded-sm' onClick={handleLogoutClick}>Logout</li>
+              <li className='py-2 px-3 cursor-pointer hover:bg-gray-100 transition rounded-lg flex items-center gap-2' onClick={handleLogoutClick}>
+                <i className="fa-solid fa-right-from-bracket"></i> Logout
+              </li>
             </>
           ) : (
             <li className='py-2 px-3 cursor-pointer text-primary hover:bg-gray-100 transition rounded-sm'><Link to="/login">Login</Link></li>
@@ -48,7 +54,7 @@ const Navbar = () => {
           <ul className='flex flex-col gap-4 uppercase font-medium text-center'>
             {authState.isLoggedIn ? (
               <>
-                <li className="bg-blue-500 text-white hover:bg-blue-600 font-medium transition py-2 px-3">
+                <li className="bg-primary hover:bg-primary-dark text-white font-medium transition py-2 px-3">
                   <Link to='/tasks/add' className='block w-full h-full'> <i className="fa-solid fa-plus"></i> Add task </Link>
                 </li>
                 <li className='py-2 px-3 cursor-pointer hover:bg-gray-200 transition rounded-sm'>

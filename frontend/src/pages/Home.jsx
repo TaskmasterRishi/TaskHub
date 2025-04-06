@@ -33,11 +33,14 @@ const Home = () => {
     <>
       <MainLayout>
         {!isLoggedIn ? (
-          <div className='bg-gradient-to-r from-blue-600 to-blue-500 text-white h-[40vh] py-12 text-center'>
-            <h1 className='text-3xl font-bold mb-4'>Welcome to Task Manager</h1>
-            <Link to="/signup" className='inline-block mt-6 px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors'>
-              Get Started
-            </Link>
+          <div className='bg-gradient-to-r from-primary to-primary-dark text-white h-[50vh] py-16 text-center flex flex-col justify-center'>
+            <div className="max-w-2xl mx-auto px-4">
+              <h1 className='text-4xl font-bold mb-6'>Welcome to Task Manager</h1>
+              <p className="text-lg mb-8 text-gray-100">Organize your tasks efficiently and boost your productivity</p>
+              <Link to="/signup" className='inline-flex items-center justify-center mt-6 px-8 py-3.5 bg-white text-primary font-semibold rounded-lg hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl'>
+                Get Started <i className="fa-solid fa-arrow-right ml-2"></i>
+              </Link>
+            </div>
           </div>
         ) : (
           <>
