@@ -19,17 +19,45 @@ const Home = () => {
     <>
       <MainLayout>
         {!isLoggedIn ? (
-          <div className='bg-primary text-white h-[40vh] py-8 text-center'>
-            <h1 className='text-2xl'> Welcome to Task Manager App</h1>
-            <Link to="/signup" className='mt-10 text-xl block space-x-2 hover:space-x-4'>
-              <span className='transition-[margin]'>Join now to manage your tasks</span>
-              <span className='relative ml-4 text-base transition-[margin]'><i className="fa-solid fa-arrow-right"></i></span>
+          <div className='bg-gradient-to-r from-blue-600 to-blue-500 text-white h-[40vh] py-12 text-center'>
+            <h1 className='text-3xl font-bold mb-4'>Welcome to Task Manager</h1>
+            <Link to="/signup" className='inline-block mt-6 px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors'>
+              Get Started
             </Link>
           </div>
         ) : (
           <>
-            <h1 className='text-lg mt-8 mx-8 border-b border-b-gray-300'>Welcome {authState.user.name}</h1>
-            <Tasks />
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <h1 className='text-2xl font-semibold text-gray-800 mb-8'>Welcome back, {authState.user.name}</h1>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* To Do Column */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h2 className="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                    To Do
+                  </h2>
+                  <Tasks status="todo" droppableId="todo" />
+                </div>
+
+                {/* In Progress Column */}
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <h2 className="text-lg font-semibold text-blue-700 mb-4 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                    In Progress
+                  </h2>
+                  <Tasks status="in-progress" droppableId="in-progress" />
+                </div>
+
+                {/* Completed Column */}
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <h2 className="text-lg font-semibold text-green-700 mb-4 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                    Completed
+                  </h2>
+                  <Tasks status="completed" droppableId="completed" />
+                </div>
+              </div>
+            </div>
           </>
         )}
       </MainLayout>
