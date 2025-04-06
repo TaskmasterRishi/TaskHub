@@ -8,11 +8,13 @@ export const postLoginData = (email, password) => async (dispatch) => {
     const { data } = await api.post('/auth/login', { email, password });
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: data,
+      payload: {
+        user: data.user,
+        token: data.token
+      }
     });
     localStorage.setItem('token', data.token);
     toast.success(data.msg);
-
   }
   catch (error) {
     const msg = error.response?.data?.msg || error.message;
@@ -31,13 +33,25 @@ export const saveProfile = (token) => async (dispatch) => {
     const { data } = await api.get('/profile', {
       headers: { Authorization: token }
     });
+    if (!data.user) {
+      throw new Error("User data not found in response");
+    }
     dispatch({
       type: SAVE_PROFILE,
-      payload: { user: data.user, token },
+      payload: { 
+        user: {
+          ...data.user,
+          name: data.user.name || data.user.email // Use email if name is not available
+        }, 
+        token 
+      },
     });
   }
   catch (error) {
-    // console.log(error);
+    console.error("Error fetching profile:", error);
+    // Clear invalid token
+    localStorage.removeItem('token');
+    dispatch({ type: LOGOUT });
   }
 }
 

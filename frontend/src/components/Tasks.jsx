@@ -24,7 +24,7 @@ const Tasks = ({ status, droppableId }) => {
   useEffect(() => {
     if (!authState.isLoggedIn) return;
     fetchTasks();
-  }, [authState.isLoggedIn, fetchTasks]);
+  }, [authState.isLoggedIn]);
 
   useEffect(() => {
     console.log("Tasks data:", tasks);

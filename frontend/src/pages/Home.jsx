@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Tasks from '../components/Tasks';
@@ -8,12 +8,26 @@ const Home = () => {
 
   const authState = useSelector(state => state.authReducer);
   const { isLoggedIn } = authState;
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    document.title = authState.isLoggedIn ? `${authState.user.name}'s tasks` : "Task Manager";
+    if (authState.user?.name) {
+      setIsLoading(false);
+    }
   }, [authState]);
 
+  useEffect(() => {
+    document.title = authState.isLoggedIn && authState.user?.name ? 
+      `${authState.user.name}'s tasks` : "Task Manager";
+  }, [authState]);
 
+  useEffect(() => {
+    console.log("Auth State:", authState);
+    console.log("Is Logged In:", authState.isLoggedIn);
+    console.log("User Object:", authState.user);
+    console.log("User Name:", authState.user?.name);
+    console.log("Token:", authState.token);
+  }, [authState]);
 
   return (
     <>
@@ -28,7 +42,11 @@ const Home = () => {
         ) : (
           <>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              <h1 className='text-2xl font-semibold text-gray-800 mb-8'>Welcome back, {authState.user.name}</h1>
+              <h1 className='text-2xl font-semibold text-gray-800 mb-8'>
+                Welcome back, <span className="text-blue-600">
+                  {isLoading ? 'Loading...' : (authState.user?.username || authState.user?.email)}
+                </span>
+              </h1>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* To Do Column */}
                 <div className="bg-gray-50 p-4 rounded-lg">
