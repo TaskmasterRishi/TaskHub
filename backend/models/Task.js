@@ -6,10 +6,21 @@ const taskSchema = new mongoose.Schema({
     ref: "User",
     required: true
   },
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+    maxlength: 100
+  },
   description: {
     type: String,
     required: true,
   },
+  stage: {
+    type: String,
+    enum: ['todo', 'in-progress', 'completed'],
+    default: 'todo'
+  }
 }, {
   timestamps: true
 });

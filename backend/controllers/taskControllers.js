@@ -5,6 +5,7 @@ const { validateObjectId } = require("../utils/validation");
 exports.getTasks = async (req, res) => {
   try {
     const tasks = await Task.find({ user: req.user.id });
+    console.log("Tasks from database:", tasks);
     res.status(200).json({ tasks, status: true, msg: "Tasks found successfully.." });
   }
   catch (err) {
@@ -33,11 +34,16 @@ exports.getTask = async (req, res) => {
 
 exports.postTask = async (req, res) => {
   try {
-    const { description } = req.body;
-    if (!description) {
-      return res.status(400).json({ status: false, msg: "Description of task not found" });
+    const { title, description, stage } = req.body;
+    if (!title || !description) {
+      return res.status(400).json({ status: false, msg: "Title and description are required" });
     }
-    const task = await Task.create({ user: req.user.id, description });
+    const task = await Task.create({ 
+      user: req.user.id, 
+      title,
+      description,
+      stage: stage || 'todo'
+    });
     res.status(200).json({ task, status: true, msg: "Task created successfully.." });
   }
   catch (err) {
@@ -48,9 +54,9 @@ exports.postTask = async (req, res) => {
 
 exports.putTask = async (req, res) => {
   try {
-    const { description } = req.body;
-    if (!description) {
-      return res.status(400).json({ status: false, msg: "Description of task not found" });
+    const { title, description, stage } = req.body;
+    if (!title || !description) {
+      return res.status(400).json({ status: false, msg: "Title and description are required" });
     }
 
     if (!validateObjectId(req.params.taskId)) {
@@ -66,7 +72,10 @@ exports.putTask = async (req, res) => {
       return res.status(403).json({ status: false, msg: "You can't update task of another user" });
     }
 
-    task = await Task.findByIdAndUpdate(req.params.taskId, { description }, { new: true });
+    task = await Task.findByIdAndUpdate(req.params.taskId, 
+      { title, description, stage: stage || 'todo' },
+      { new: true }
+    );
     res.status(200).json({ task, status: true, msg: "Task updated successfully.." });
   }
   catch (err) {

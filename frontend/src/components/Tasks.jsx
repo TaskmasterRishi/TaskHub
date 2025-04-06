@@ -21,6 +21,9 @@ const Tasks = () => {
     fetchTasks();
   }, [authState.isLoggedIn, fetchTasks]);
 
+  useEffect(() => {
+    console.log("Tasks data:", tasks);
+  }, [tasks]);
 
   const handleDelete = (id) => {
     const config = { url: `/tasks/${id}`, method: "delete", headers: { Authorization: authState.token } };
@@ -47,9 +50,19 @@ const Tasks = () => {
             ) : (
               tasks.map((task, index) => (
                 <div key={task._id} className='bg-white my-4 p-4 text-gray-600 rounded-md shadow-md'>
-                  <div className='flex'>
-
-                    <span className='font-medium'>Task #{index + 1}</span>
+                  <div className='flex items-center'>
+                    <div className='flex-1'>
+                      <h3 className='font-medium'>{task.title}</h3>
+                      <span className={`text-sm px-2 py-1 rounded-full ${
+                        task.stage === 'todo' ? 'bg-gray-200 text-gray-800' :
+                        task.stage === 'in-progress' ? 'bg-blue-200 text-blue-800' :
+                        'bg-green-200 text-green-800'
+                      }`}>
+                        {task.stage === 'todo' ? 'To Do' :
+                         task.stage === 'in-progress' ? 'In Progress' :
+                         'Completed'}
+                      </span>
+                    </div>
 
                     <Tooltip text={"Edit this task"} position={"top"}>
                       <Link to={`/tasks/${task._id}`} className='ml-auto mr-2 text-green-600 cursor-pointer'>
@@ -64,7 +77,7 @@ const Tasks = () => {
                     </Tooltip>
 
                   </div>
-                  <div className='whitespace-pre'>{task.description}</div>
+                  <div className='whitespace-pre mt-2'>{task.description}</div>
                 </div>
               ))
 

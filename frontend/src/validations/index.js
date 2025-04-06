@@ -44,9 +44,20 @@ export const validate = (group, name, value) => {
   }
   else if (group === "task") {
     switch (name) {
+      case "title": {
+        if (!value) return "This field is required";
+        if (value.length > 100) return "Max. limit is 100 characters.";
+        return null;
+      }
       case "description": {
         if (!value) return "This field is required";
         if (value.length > 100) return "Max. limit is 100 characters.";
+        return null;
+      }
+      case "stage": {
+        if (!['todo', 'in-progress', 'completed'].includes(value)) {
+          return "Invalid task stage";
+        }
         return null;
       }
       default: return null;

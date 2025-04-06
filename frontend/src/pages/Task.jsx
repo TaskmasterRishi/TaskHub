@@ -17,7 +17,9 @@ const Task = () => {
   const mode = taskId === undefined ? "add" : "update";
   const [task, setTask] = useState(null);
   const [formData, setFormData] = useState({
-    description: ""
+    title: "",
+    description: "",
+    stage: "todo"
   });
   const [formErrors, setFormErrors] = useState({});
 
@@ -32,7 +34,11 @@ const Task = () => {
       const config = { url: `/tasks/${taskId}`, method: "get", headers: { Authorization: authState.token } };
       fetchData(config, { showSuccessToast: false }).then((data) => {
         setTask(data.task);
-        setFormData({ description: data.task.description });
+        setFormData({
+          title: data.task.title,
+          description: data.task.description,
+          stage: data.task.stage
+        });
       });
     }
   }, [mode, authState, taskId, fetchData]);
@@ -48,7 +54,9 @@ const Task = () => {
   const handleReset = e => {
     e.preventDefault();
     setFormData({
-      description: task.description
+      title: task.title,
+      description: task.description,
+      stage: task.stage
     });
   }
 
@@ -62,14 +70,20 @@ const Task = () => {
       return;
     }
 
+    console.log("Submitting task with data:", formData);
+
+    const updatedFormData = {
+      ...formData
+    };
+
     if (mode === "add") {
-      const config = { url: "/tasks", method: "post", data: formData, headers: { Authorization: authState.token } };
+      const config = { url: "/tasks", method: "post", data: updatedFormData, headers: { Authorization: authState.token } };
       fetchData(config).then(() => {
         navigate("/");
       });
     }
     else {
-      const config = { url: `/tasks/${taskId}`, method: "put", data: formData, headers: { Authorization: authState.token } };
+      const config = { url: `/tasks/${taskId}`, method: "put", data: updatedFormData, headers: { Authorization: authState.token } };
       fetchData(config).then(() => {
         navigate("/");
       });
@@ -94,9 +108,42 @@ const Task = () => {
             <>
               <h2 className='text-center mb-4'>{mode === "add" ? "Add New Task" : "Edit Task"}</h2>
               <div className="mb-4">
+                <label htmlFor="title">Title</label>
+                <input 
+                  type="text" 
+                  name="title" 
+                  id="title" 
+                  value={formData.title} 
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-md"
+                  placeholder="Task title"
+                />
+                {fieldError("title")}
+              </div>
+              <div className="mb-4">
                 <label htmlFor="description">Description</label>
-                <Textarea type="description" name="description" id="description" value={formData.description} placeholder="Write here.." onChange={handleChange} />
+                <Textarea 
+                  name="description" 
+                  id="description" 
+                  value={formData.description} 
+                  placeholder="Write here.." 
+                  onChange={handleChange} 
+                />
                 {fieldError("description")}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="stage">Stage</label>
+                <select
+                  name="stage"
+                  id="stage"
+                  value={formData.stage}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-md"
+                >
+                  <option value="todo">To Do</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                </select>
               </div>
 
               <button className='bg-primary text-white px-4 py-2 font-medium hover:bg-primary-dark' onClick={handleSubmit}>{mode === "add" ? "Add task" : "Update Task"}</button>
