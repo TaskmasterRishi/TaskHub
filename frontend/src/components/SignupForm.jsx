@@ -9,7 +9,7 @@ const SignupForm = () => {
 
   const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
-    name: "",
+    username: "",
     email: "",
     password: ""
   });
@@ -54,9 +54,9 @@ const SignupForm = () => {
           <>
             <h2 className='text-center mb-4'>Welcome user, please signup here</h2>
             <div className="mb-4">
-              <label htmlFor="name" className="after:content-['*'] after:ml-0.5 after:text-red-500">Name</label>
-              <Input type="text" name="name" id="name" value={formData.name} placeholder="Your name" onChange={handleChange} />
-              {fieldError("name")}
+              <label htmlFor="username" className="after:content-['*'] after:ml-0.5 after:text-red-500">Username</label>
+              <Input type="text" name="username" id="username" value={formData.username} placeholder="Your username" onChange={handleChange} />
+              {fieldError("username")}
             </div>
 
             <div className="mb-4">

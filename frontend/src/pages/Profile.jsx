@@ -46,7 +46,7 @@ const Profile = () => {
             <div>
               <label className="block text-sm font-medium text-gray-500">Name</label>
               <p className="mt-1 text-lg text-gray-900">
-                {authState.user?.username || 'Not set'}
+                {authState.user?.username || authState.user?.email || 'Not set'}
               </p>
             </div>
             <div>

@@ -9,7 +9,11 @@ export const postLoginData = (email, password) => async (dispatch) => {
     dispatch({
       type: LOGIN_SUCCESS,
       payload: {
-        user: data.user,
+        user: {
+          _id: data.user._id,
+          username: data.user.username,
+          email: data.user.email
+        },
         token: data.token
       }
     });
@@ -36,12 +40,14 @@ export const saveProfile = (token) => async (dispatch) => {
     if (!data.user) {
       throw new Error("User data not found in response");
     }
+    console.log("Profile data received:", data);
     dispatch({
       type: SAVE_PROFILE,
       payload: { 
         user: {
-          ...data.user,
-          name: data.user.name || data.user.email // Use email if name is not available
+          _id: data.user._id,
+          username: data.user.username,
+          email: data.user.email
         }, 
         token 
       },

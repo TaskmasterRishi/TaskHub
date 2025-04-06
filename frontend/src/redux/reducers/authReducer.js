@@ -17,7 +17,11 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoggedIn: true,
-        user: action.payload.user,
+        user: {
+          _id: action.payload.user._id,
+          username: action.payload.user.username,
+          email: action.payload.user.email
+        },
         token: action.payload.token,
         successMsg: action.payload.msg,
         errorMsg: ""
@@ -30,7 +34,11 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoggedIn: true,
-        user: action.payload.user,
+        user: {
+          _id: action.payload.user._id,
+          username: action.payload.user.username,
+          email: action.payload.user.email
+        },
         token: action.payload.token,
         successMsg: "",
         errorMsg: ""

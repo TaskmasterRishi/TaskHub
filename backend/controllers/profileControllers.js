@@ -8,11 +8,16 @@ exports.getProfile = async (req, res) => {
       return res.status(404).json({ status: false, msg: "User not found" });
     }
     console.log("Found user:", user);
+    console.log("User data being sent:", {
+      _id: user._id,
+      username: user.username,
+      email: user.email
+    });
     res.status(200).json({ 
       status: true, 
       user: {
         _id: user._id,
-        name: user.name || user.email,
+        username: user.username,
         email: user.email
       }
     });

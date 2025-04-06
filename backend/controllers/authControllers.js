@@ -7,11 +7,11 @@ const jwt = require("jsonwebtoken");
 
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
+    const { username, email, password } = req.body;
+    if (!username || !email || !password) {
       return res.status(400).json({ msg: "Please fill all the fields" });
     }
-    if (typeof name !== "string" || typeof email !== "string" || typeof password !== "string") {
+    if (typeof username !== "string" || typeof email !== "string" || typeof password !== "string") {
       return res.status(400).json({ msg: "Please send string values only" });
     }
 
@@ -30,7 +30,7 @@ exports.signup = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({ name, email, password: hashedPassword });
+    await User.create({ username, email, password: hashedPassword });
     res.status(200).json({ msg: "Congratulations!! Account has been created for you.." });
   }
   catch (err) {
@@ -61,7 +61,7 @@ exports.login = async (req, res) => {
       token,
       user: {
         _id: user._id,
-        name: user.name,
+        username: user.username,
         email: user.email
       }
     });
@@ -82,7 +82,7 @@ exports.getProfile = async (req, res) => {
       status: true, 
       user: {
         _id: user._id,
-        name: user.name,
+        username: user.username,
         email: user.email
       }
     });
