@@ -110,7 +110,7 @@ const Task = () => {
   return (
     <>
       <MainLayout>
-        <form className='m-auto my-16 max-w-[1000px] bg-white p-8 border border-gray-100 rounded-xl shadow-lg'>
+        <form className='m-auto my-16 max-w-[1000px] bg-white p-8 border border-gray-100 rounded-xl shadow-lg' onSubmit={handleSubmit}>
           {loading ? (
             <Loader />
           ) : (
